@@ -71,12 +71,16 @@ public class Geldbetrag {
 	}
 
 	// MAIN STUFF
-
 	/**
 	 * String repräsentation des Geldbetrages in der Form "EE..,CC".
 	 * @return ein String, der dem Geldbetrag entspricht
 	 */
-	public String getStringRepräsentation() {
+	public String getStringrepräsentation() {
+		return getStringRepräsentation(this.eurocents);
+	}
+
+
+	private static String getStringRepräsentation(int eurocents) {
 		char[] cs = Integer.valueOf(eurocents).toString().toCharArray();
 		String CC = "";
 		String EE = "";
@@ -169,25 +173,66 @@ public class Geldbetrag {
 	 * @require geldbetrag nicht größer als dieser
 	 * @ensure Wert von diesem entspricht old - geldbetrag
 	 */
-
 	public void sub(Geldbetrag geldbetrag) {
-
+		assert (geldbetrag != null) : "Vorbedingung verletzt geldbetrag nicht null";
+		assert (geldbetrag.getValidity()) : "Vorbedingung verletzt geldbetrag nicht valide";
+		assert (geldbetrag.getGeldbetrag() >= eurocents) : "Vorbedingung verletzt geldbetrag größer als dieser";
+		sub(geldbetrag.getGeldbetrag());
 	}
 
+	/**
+	 * Zieht einen Geldbetrag von diesem in der Form int entspricht Eurocent ab
+	 *  z.b. würde 14 einem Geldbetrag von 14 cent, bzw dem Betrag "00,14" entsprechen
+	 * @param betrag der Betrag in Eurocent der abzuziehen ist
+	 * @require betrag nicht negativ
+	 * @require betrag nicht größer als dieser
+	 * @ensure Wert von diesem entspricht old - betrag
+	 */
 	public void sub(int betrag) {
-
+		assert (betrag >= 0) : "Vorbedingung verletzt betrag nicht negativ";
+		assert (betrag <= eurocents) : "Vorbedingung verletzt betrag größer als dieser";
+		eurocents -= betrag;
 	}
 
+	/**
+	 * Zieht einen Geldbetrag von diesem in der Form Integer Wert entspricht Eurocent ab
+	 *  z.b. würde 14 einem Geldbetrag von 14 cent, bzw dem Betrag "00,14" entsprechen
+	 * @param betrag der Betrag in Eurocent der abzuziehen ist
+	 * @require Betrag nicht null
+	 * @require betrag nicht negativ
+	 * @require betrag nicht größer als dieser
+	 * @ensure Wert von diesem entspricht old - betrag
+	 */
 	public void sub(Integer betrag) {
-
+		assert (betrag != null) : "Vorbedingung verletzt betrag nicht null";
+		sub(betrag.intValue());
 	}
 
+	/**
+	 * Zieht einen Wert in der Form eines Strings.
+	 * Der String muss allerdings der Form "EE,CC", "EE.CC" oder "CCCC" entsprechen,
+	 * um gültig zu sein
+	 * @param geldbetrag der abzuziehende Betrag
+	 * @require geldbetrag nicht null
+	 * @require die Form des Geldbetrages entspricht der geforderten
+	 * @require geldbetrag nicht größer als dieser
+	 * @ensure Wert von diesem entspricht old - geldbetrag
+	 */
 	public void sub(String geldbetrag) {
-
+		assert (geldbetrag != null) : "Vorbedingung verletzt geldbetrag nicht null";
+		Geldbetrag sub = new Geldbetrag(geldbetrag);
+		sub(sub.getGeldbetrag());
 	}
 
+	/**
+	 * multipliziert den Betrag von diesem mit einer zahl
+	 * @param multiplier die zahl zum multiplizieren
+	 * @require die zahl ist größer als 0
+	 *@ensure die zahl entspricht dem Wert mal multiplier,achtung bei zu großen zahlen 
+	 */
 	public void multiply(int multiplier) {
-
+		assert (multiplier > 0) : "Vordbedingung verletzt multiplier zu klein";
+		eurocents *= multiplier;
 	}
 
 	// CLASS MATH-METHODS
@@ -195,10 +240,8 @@ public class Geldbetrag {
 	 * Gibt ein neues Geldbetragsobjekt zurück, welches dem ersten Geldbetrag minus
 	 * dem zweiten entspicht. Diese Methode entspricht dem mathematischen a-b.
 	 * 
-	 * @param a
-	 *            der Geldbetrag, von dem Abgezogen werden soll
-	 * @param b
-	 *            der Geldbetrag, der abzuziehen ist
+	 * @param a der Geldbetrag, von dem Abgezogen werden soll
+	 * @param b der Geldbetrag, der abzuziehen ist
 	 * @return Ein neues Geldbetragsobjekt, welches a-b enspricht
 	 * @require a nicht null
 	 * @require a ist valide, also nicht negativ
@@ -288,6 +331,33 @@ public class Geldbetrag {
 		return eurocents >= 0;
 	}
 
+	/**
+	 * Konvertiert ein Integer Objekt zu einem String, welcher der Geldbetrag-Form entspricht
+	 * @param betrag das Integer Objekt zum konvertieren
+	 * @require betrag nicht null
+	 * @require betrag nicht negativ 
+	 * @return ein String der der Gelddbetrag-Form entspricht mit dem gewünschten Betrag
+	 * @ensure String genügt der Geldbetrag-Form
+	 * @ensure String hat gleichen Wert wie der Input-Betrag
+	 */
+	public static String konvertireZuString(Integer betrag) {
+		assert (betrag != null) : "Vorbedingung verletzt betrag nicht null";
+		return konvertiereZuString(betrag.intValue());
+	}
+
+	/**
+	 * Konvertiert einnen int-Wert in einen String, der der Geldbetrag-Form entspricht
+	 * @param betrag der dargestellt werden soll
+	 * @return String in der Geldbetrag-Form
+	 * @require betrag nicht negativ
+	 * @ensure String genügt der Geldbetrag-Form
+	 * @ensure String hat gleichen Wert wie der Input-Betrag
+	 */
+	public static String konvertiereZuString(int betrag) {
+		assert (betrag >= 0) : "Vorbedingung verletzt betrag zu klein";
+		return getStringRepräsentation(betrag);
+	}
+
 	@Override
 	public boolean equals(Object other) {
 		if (other == null)
@@ -302,6 +372,6 @@ public class Geldbetrag {
 
 	@Override
 	public String toString() {
-		return "Geldbetrag Eurocents: " + eurocents + " präsentation: " + getStringRepräsentation();
+		return "Geldbetrag Eurocents: " + eurocents + " präsentation: " + getStringRepräsentation(eurocents);
 	}
 }
