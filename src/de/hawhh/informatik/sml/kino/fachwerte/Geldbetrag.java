@@ -199,7 +199,7 @@ public static Geldbetrag geldbetragAddition(Geldbetrag a, Geldbetrag b) {
 }
 
 public static Geldbetrag geldbertagMultiply(Geldbetrag a, int multiplier) {
-	
+	return null;
 }
 
 //UTILITY
