@@ -3,6 +3,7 @@ package de.hawhh.informatik.sml.kino.materialien;
 import java.util.Set;
 
 import de.hawhh.informatik.sml.kino.fachwerte.Datum;
+import de.hawhh.informatik.sml.kino.fachwerte.Geldbetrag;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.fachwerte.Uhrzeit;
 
@@ -22,7 +23,7 @@ public class Vorstellung
     private Uhrzeit _anfangszeit;
     private Uhrzeit _endzeit;
     private Datum _datum;
-    private int _preis;
+    private int _preis;   
     private boolean[][] _verkauft;
     private int _anzahlVerkauftePlaetze;
 

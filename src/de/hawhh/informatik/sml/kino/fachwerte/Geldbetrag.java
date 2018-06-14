@@ -30,6 +30,7 @@ public class Geldbetrag {
 	 */
 	public Geldbetrag(Integer geldbetrag) {
 		assert (geldbetrag != null) : "Vorbedingung Verletzt nicht null";
+		if(geldbetrag.intValue()<0) throw new NumberFormatException("Negativer Input");
 		eurocents = geldbetrag.intValue();
 	}
 
@@ -41,6 +42,7 @@ public class Geldbetrag {
 	 */
 	public Geldbetrag(int eurocents) {
 		assert (eurocents >= 0) : "Vorbedingung verletzt geldbetrag nicht negativ";
+		if(eurocents < 0) throw new NumberFormatException("Negativer Input");
 		this.eurocents = eurocents;
 	}
 
@@ -63,10 +65,12 @@ public class Geldbetrag {
 				geldbetrag = geldbetrag.replaceAll(",", ".");
 				Double d = Double.parseDouble(geldbetrag);
 				d = d * 100;
+				if(d<0) throw new NumberFormatException("Negativer Input");
 				eurocents = d.intValue();
-			} catch (NumberFormatException ex) {
 				
+			} catch (NumberFormatException ex) {				
 				assert (false) : "Vorbedingung verletzt -> Geldbetrag entspricht nicht Format";
+				throw ex;
 			}
 		}
 	}
@@ -103,6 +107,7 @@ public class Geldbetrag {
 			}
 		} else {
 			// nur ein Eintrag
+			EE = "00";
 			CC = "0" + cs[0];
 		}
 
