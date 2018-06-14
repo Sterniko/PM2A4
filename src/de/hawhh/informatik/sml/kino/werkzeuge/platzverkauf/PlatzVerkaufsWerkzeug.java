@@ -3,7 +3,7 @@ package de.hawhh.informatik.sml.kino.werkzeuge.platzverkauf;
 import java.util.Set;
 
 import javafx.scene.layout.Pane;
-
+import de.hawhh.informatik.sml.kino.fachwerte.Geldbetrag;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.materialien.Kinosaal;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
@@ -91,7 +91,8 @@ public class PlatzVerkaufsWerkzeug {
 
 		if (istVerkaufenMoeglich(plaetze)) {
 			int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
-			_ui.getPreisLabel().setText("Gesamtpreis: " + preis + " Eurocent");
+			Geldbetrag derpreis = new Geldbetrag(preis);
+			_ui.getPreisLabel().setText("Gesamtpreis: " + derpreis.getStringrepräsentation() + " Euro");
 			_preisFuerAuswahl = preis;
 		} else {
 			_ui.getPreisLabel().setText("Gesamtpreis:");
