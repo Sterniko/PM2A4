@@ -217,7 +217,7 @@ public class GeldbetragTest {
 	
 	@Test
 	public void testKonvertireZuStringInt() {
-		String gb = Geldbetrag.konvertireZuString(30);
+		String gb = Geldbetrag.konvertireZuString(30);	
 		Geldbetrag geldbetrag = new Geldbetrag(21);
 		geldbetrag.add(gb);
 		assertTrue(51 == geldbetrag.getGeldbetrag());

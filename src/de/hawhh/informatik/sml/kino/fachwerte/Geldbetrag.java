@@ -60,15 +60,18 @@ public class Geldbetrag {
 			eurocents = i.intValue();
 		} catch (NumberFormatException e) {
 			try {
-				geldbetrag.replaceAll(",", ".");
+				geldbetrag = geldbetrag.replaceAll(",", ".");
 				Double d = Double.parseDouble(geldbetrag);
 				d = d * 100;
 				eurocents = d.intValue();
 			} catch (NumberFormatException ex) {
+				
 				assert (false) : "Vorbedingung verletzt -> Geldbetrag entspricht nicht Format";
 			}
 		}
 	}
+
+	
 
 	// MAIN STUFF
 	/**
