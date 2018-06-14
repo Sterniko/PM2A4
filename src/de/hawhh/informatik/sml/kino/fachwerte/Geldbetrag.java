@@ -79,7 +79,6 @@ public class Geldbetrag {
 		return getStringRepräsentation(this.eurocents);
 	}
 
-
 	private static String getStringRepräsentation(int eurocents) {
 		char[] cs = Integer.valueOf(eurocents).toString().toCharArray();
 		String CC = "";
@@ -373,5 +372,10 @@ public class Geldbetrag {
 	@Override
 	public String toString() {
 		return "Geldbetrag Eurocents: " + eurocents + " präsentation: " + getStringRepräsentation(eurocents);
+	}
+
+	@Override
+	public int hashCode() {
+		return getStringRepräsentation(eurocents).hashCode();
 	}
 }
