@@ -15,7 +15,6 @@ public class Geldbetrag {
 	/**
 	 * Konstruktor eines leeren Geldbetrages. Hier wird per default ein "00,00"
 	 * erzeugt.
-	 * 
 	 * @ensure das Objekt ist benutzbar und repräsentiert "00,00".
 	 */
 	public Geldbetrag() {
@@ -24,9 +23,7 @@ public class Geldbetrag {
 
 	/**
 	 * Konstruktor eines Geldbetrages mit Hilfe eines Integer-Objektes
-	 * 
-	 * @param geldbetrag
-	 *            das Integer Objekt des Geldbetrages
+	 * @param geldbetrag das Integer Objekt des Geldbetrages
 	 * @require der Integer ist nicht null
 	 * @require der Wert ist nicht negativ
 	 * @ensure der Wert des Geldbetrages entspricht dem des Integers
@@ -38,7 +35,6 @@ public class Geldbetrag {
 
 	/**
 	 * Konstruktor eines Geldbetrages, der dem Betrag in Eurocents entspricht
-	 * 
 	 * @param eurocents
 	 * @require der Geldbetrag ist nicht negativ
 	 * @ensure ein Objekt, das dem Geldbetrag entspricht
@@ -53,8 +49,7 @@ public class Geldbetrag {
 	 * der Form einer Zahl entsprechen oder einer Kommazahl. Es wird maximal die
 	 * zweite Nachkommastelle berücksichtigt.
 	 * 
-	 * @param geldbetrag
-	 *            String repräsenation des Geldbetrages
+	 * @param geldbetrag String-Repräsenation des Geldbetrages
 	 * @require geldbetrag nicht null und geldbetrag hat die geforderte Form.
 	 * @ensure ein Geldbetrag-Objekt, welches dem String enspricht
 	 */
@@ -65,6 +60,7 @@ public class Geldbetrag {
 			eurocents = i.intValue();
 		} catch (NumberFormatException e) {
 			try {
+				geldbetrag.replaceAll(",", ".");
 				Double d = Double.parseDouble(geldbetrag);
 				d = d * 100;
 				eurocents = d.intValue();
@@ -78,21 +74,22 @@ public class Geldbetrag {
 
 	/**
 	 * String repräsentation des Geldbetrages in der Form "EE..,CC".
-	 * 
 	 * @return ein String, der dem Geldbetrag entspricht
 	 */
 	public String getStringRepräsentation() {
 		char[] cs = Integer.valueOf(eurocents).toString().toCharArray();
 		String CC = "";
 		String EE = "";
-		// "normale länge : letzte 2 einträge sind cent, der rest euro
+		// "normale länge : letzte 2 einträge
+		// sind cent, der rest euro
 		if (cs.length >= 3) {
 			CC += cs[cs.length - 2];
 			CC += cs[cs.length - 1];
 			for (int i = 0; i < cs.length - 2; i++) {
 				EE += cs[i];
 			}
-			// falls nur zwei einträge vorhanden, sind beide cent
+			// falls nur zwei einträge vorhanden,
+			// sind beide cent
 		} else if (cs.length == 2) {
 			EE = "00";
 			for (int j = 0; j < cs.length; j++) {
@@ -111,37 +108,69 @@ public class Geldbetrag {
 
 	// OBJECT MATH-METHODS
 
-/**
- * addiert einen Geldbetrag auf diesen auf
- * @param der Geldbetrag, der auf diesen addiert werden soll
- * @require betrag  nicht null
- * @require betrag ist valide
- * @ensure der Wert des Geldbetrages ist gleich old + betrag 
- */
-public void add(Geldbetrag betrag) {
-	assert(betrag != null): "Vorbedingung verletzt betrag nicht null";
-	assert (betrag.getValidity()): "Vorbedingung verletzt betrag nicht valide";
-	this.eurocents += betrag.getGeldbetrag();
-}
-/**
- * addiert eine Anzhal von int auf diesen Geldbetrag auf. Dies symbolisiert Cents, 
- * z.b. würde 14 einem Geldbetrag von 14 cent, bzw dem Betrag "00,14" entsprechen.
- * @param der Geldbetrag, der auf diesen addiert werden soll
- * @require betrag ist größer gleich 0;
- * @ensure der Wert des Geldbetrages ist gleich old + betrag 
+	/**
+	 * addiert einen Geldbetrag auf diesen auf
+	 * @param der Geldbetrag, der auf diesen addiert werden soll
+	 * @require betrag nicht null
+	 * @require betrag ist valide
+	 * @ensure der Wert des Geldbetrages ist gleich old + betrag
+	 */
+	public void add(Geldbetrag betrag) {
+		assert (betrag != null) : "Vorbedingung verletzt betrag nicht null";
+		assert (betrag.getValidity()) : "Vorbedingung verletzt betrag nicht valide";
+		add(betrag.getGeldbetrag());
+	}
+
+	/**
+	 * addiert eine Anzal von int auf diesen Geldbetrag auf. Dies symbolisiert
+	 * Cents, z.b. würde 14 einem Geldbetrag von 14 cent, bzw dem Betrag "00,14"
+	 * entsprechen.
+	 * @param der Geldbetrag, der auf diesen addiert werden soll
+	 * @require betrag ist größer gleich 0;
+	 * @ensure der Wert des Geldbetrages ist gleich old + betrag
+	 */
 	public void add(int betrag) {
-
+		assert (betrag >= 0) : "Vorbedingung verletzt betrag kleiner als 0";
+		eurocents += betrag;
 	}
 
+	/**
+	 * addiert ein Integer Objekt auf diesen Geldbetrag auf. Diese Methode entspricht add(int). De symbolisiert
+	 * Cents, z.b. würde 14 einem Geldbetrag von 14 cent, bzw dem Betrag "00,14"
+	 * entsprechen.
+	 * @param der Geldbetrag, der auf diesen addiert werden soll
+	 * @require betrag nicht null
+	 * @require betrag ist größer gleich 0;
+	 * @ensure der Wert des Geldbetrages ist gleich old + betrag
+	 */
 	public void add(Integer betrag) {
-
+		assert (betrag != null) : "Vorbedingung verletzt betrag nicht null";
+		add(betrag.intValue());
 	}
 
+	/**
+	 * erlaubt es, einen String, der einen Geldbetrag repräsentiert auf diesen Geldbertag zu addieren. Der String muss allerdings der Form "EE,CC",
+	 * "EE.CC" oder "CCCC" entsprechen um gültig zu sein
+	 * @param geldbetrag String repräsentation des zu addierenden Geldbetrages
+	 * @require geldbetrag nicht null
+	 * @require die Form des geldbetrages entspricht der geforderten
+	 * @ensure der Wert von diesem entspricht old + betrag
+	 */
 	public void add(String geldbetrag) {
-
+		Geldbetrag addBetrag = new Geldbetrag(geldbetrag);
+		add(addBetrag);
 	}
 
-	public void sub(Geldbetrag a) {
+	/**
+	 * Zieht einen Geldbetrag von diesem ab
+	 * @param geldbetrag der abzuziehende Betrag
+	 * @require geldbetrag nicht null
+	 * @require geldbetrag ist valide
+	 * @require geldbetrag nicht größer als dieser
+	 * @ensure Wert von diesem entspricht old - geldbetrag
+	 */
+
+	public void sub(Geldbetrag geldbetrag) {
 
 	}
 
@@ -164,7 +193,7 @@ public void add(Geldbetrag betrag) {
 	// CLASS MATH-METHODS
 	/**
 	 * Gibt ein neues Geldbetragsobjekt zurück, welches dem ersten Geldbetrag minus
-	 * dem zweiten entspicht
+	 * dem zweiten entspicht. Diese Methode entspricht dem mathematischen a-b.
 	 * 
 	 * @param a
 	 *            der Geldbetrag, von dem Abgezogen werden soll
@@ -189,13 +218,9 @@ public void add(Geldbetrag betrag) {
 	/**
 	 * Gibt die positive Differenz zweier Geldbeträge in der Form eines Geldbetrages
 	 * zurück, entspricht dem mathematischen |a-b|
-	 * 
-	 * @param a
-	 *            der erste Geldbetrag
-	 * @param b
-	 *            der zweite Geldbetrag
-	 * @return eine neuer geldbetrag, welcher der Differenz beider Beträge
-	 *         entspricht
+	 * @param a der erste Geldbetrag
+	 * @param b der zweite Geldbetrag
+	 * @return ein neuer geldbetrag, welcher der Differenz beider Beträge entspricht
 	 * @require a ist nicht null
 	 * @require a ist valide
 	 * @require b ist nicht null
@@ -214,11 +239,8 @@ public void add(Geldbetrag betrag) {
 
 	/**
 	 * Ermöglicht es zwei Geldbeträge aufeinander zu addieren
-	 * 
-	 * @param a
-	 *            der erste Geldbetrag
-	 * @param b
-	 *            der zweite Geldbetrag
+	 * @param a der erste Geldbetrag
+	 * @param b der zweite Geldbetrag
 	 * @return ein Geldbetragobjekt, welches dem Wert von a+b entspricht
 	 * @require a nicht null
 	 * @require a ist valide
@@ -240,8 +262,7 @@ public void add(Geldbetrag betrag) {
 
 	// UTILITY
 	/**
-	 * Erlaubt das Ändern des Wertes des GEldbetrages
-	 * 
+	 * Erlaubt das Ändern des Wertes des Geldbetrages
 	 * @param geldbetrag der neue Geldbetrag
 	 * @require der Geldbetrag darf nicht negativ sein
 	 * @ensure der neue Wert entspricht dem gegebenen
@@ -253,7 +274,6 @@ public void add(Geldbetrag betrag) {
 
 	/**
 	 * Gibt den momentanen Geldbetrag zurück
-	 * 
 	 * @return den Wert des Geldbetrages in Eurocents
 	 */
 	public int getGeldbetrag() {
@@ -262,7 +282,6 @@ public void add(Geldbetrag betrag) {
 
 	/**
 	 * Gibt an, ob der Geldbetrag valide ist, also nicht negativ
-	 * 
 	 * @return false wenn der Geldbetrag kleiner ist, als 0. Sonst true
 	 */
 	public boolean getValidity() {
@@ -271,14 +290,18 @@ public void add(Geldbetrag betrag) {
 
 	@Override
 	public boolean equals(Object other) {
-		if(other == null)return false;
-		if(this == other) return true;
-		if(! (other instanceof Geldbetrag)) return false;
+		if (other == null)
+			return false;
+		if (this == other)
+			return true;
+		if (!(other instanceof Geldbetrag))
+			return false;
 		Geldbetrag betrag = (Geldbetrag) other;
-		return betrag.eurocents == eurocents;	
+		return betrag.eurocents == eurocents;
 	}
+
 	@Override
 	public String toString() {
-		return "Geldbetrag Eurocents: "+eurocents +" präsentation: "+getStringRepräsentation();
+		return "Geldbetrag Eurocents: " + eurocents + " präsentation: " + getStringRepräsentation();
 	}
 }
