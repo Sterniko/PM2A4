@@ -306,8 +306,20 @@ public class Geldbetrag {
 		return new Geldbetrag(a.getGeldbetrag() + b.getGeldbetrag());
 	}
 
-	public static Geldbetrag geldbertagMultiply(Geldbetrag a, int multiplier) {
-		return null;
+	/**
+	 * Multipliziert einen gegeben Geldbetrag um eine gegebene Zahl und gibt einen neuen Geldbetrag zurück
+	 * @param a der Geldbetrag zum multiplizieren
+	 * @param multiplier die Zahl, mit der multipliziert wird
+	 * @return ein neuer Geldbetrag, der a*multiplier entspricht
+	 * @require a nicht null
+	 * @require a ist valide
+	 * @require multiplier nicht negativ
+	 *@ensure ein gültiger Geldbetrag der a*multiplier entspricht
+	 */
+	public static Geldbetrag geldbetragMultiply(Geldbetrag a, int multiplier) {
+		assert(a != null): "Vorbedingung verletzt a nicht null";
+		assert(multiplier>=0): "Vorbedingung verletzt multiplier nicht negativ";
+		return new Geldbetrag(a.getGeldbetrag()*multiplier);
 	}
 
 	// UTILITY

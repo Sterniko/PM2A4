@@ -21,7 +21,7 @@ import de.hawhh.informatik.sml.kino.werkzeuge.abrechnung.Abrechnungswerkzeug;
  * @version SoSe 2018
  */
 public class PlatzVerkaufsWerkzeug {
-	private int _preisFuerAuswahl;
+	private Geldbetrag _preisFuerAuswahl;
 	// Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
 	private Vorstellung _vorstellung;
 
@@ -90,9 +90,8 @@ public class PlatzVerkaufsWerkzeug {
 	private void aktualisierePreisanzeige(Set<Platz> plaetze) {
 
 		if (istVerkaufenMoeglich(plaetze)) {
-			int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
-			Geldbetrag derpreis = new Geldbetrag(preis);
-			_ui.getPreisLabel().setText("Gesamtpreis: " + derpreis.getStringrepräsentation() + " Euro");
+			Geldbetrag preis = _vorstellung.getPreisFuerPlaetze(plaetze);			
+			_ui.getPreisLabel().setText("Gesamtpreis: " + preis.getStringrepräsentation() + " Euro");
 			_preisFuerAuswahl = preis;
 		} else {
 			_ui.getPreisLabel().setText("Gesamtpreis:");

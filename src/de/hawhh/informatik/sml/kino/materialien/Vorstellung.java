@@ -23,7 +23,7 @@ public class Vorstellung
     private Uhrzeit _anfangszeit;
     private Uhrzeit _endzeit;
     private Datum _datum;
-    private int _preis;   
+    private Geldbetrag _preis;   
     private boolean[][] _verkauft;
     private int _anzahlVerkauftePlaetze;
 
@@ -51,14 +51,14 @@ public class Vorstellung
      * @ensure getPreis() == preis
      */
     public Vorstellung(Kinosaal kinosaal, Film film, Uhrzeit anfangszeit,
-            Uhrzeit endzeit, Datum datum, int preis)
+            Uhrzeit endzeit, Datum datum, Geldbetrag preis)
     {
         assert kinosaal != null : "Vorbedingung verletzt: saal != null";
         assert film != null : "Vorbedingung verletzt: film != null";
         assert anfangszeit != null : "Vorbedingung verletzt: anfangszeit != null";
         assert endzeit != null : "Vorbedingung verletzt: endzeit != null";
         assert datum != null : "Vorbedingung verletzt: datum != null";
-        assert preis >= 0 : "Vorbedingung verletzt: preis >= 0";
+        assert preis.getValidity(): "Vorbedingung verletzt: preis >= 0";
 
         _kinosaal = kinosaal;
         _film = film;
@@ -126,7 +126,7 @@ public class Vorstellung
      * 
      * @ensure result > 0
      */
-    public int getPreis()
+    public Geldbetrag getPreis()
     {
         return _preis;
     }
@@ -169,21 +169,21 @@ public class Vorstellung
     }
 
     /**
-     * Gibt den Gesamtpreis für die angegebenen Plätze zurücke
+     * Gibt den Gesamtpreis für die angegebenen Plätze zurück
      * 
      * @param plaetze die Sitzplätze.
      * 
-     * @return Gesamtpreis als int
+     * @return Gesamtpreis als Geldbetrag
      * 
      * @require plaetze != null
      * @require hatPlaetze(plaetze)
      */
-    public int getPreisFuerPlaetze(Set<Platz> plaetze)
+    public Geldbetrag getPreisFuerPlaetze(Set<Platz> plaetze)
     {
         assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
         assert hatPlaetze(plaetze) : "Vorbedingung verletzt: hatPlaetze(plaetze)";
 
-        return _preis * plaetze.size();
+        return Geldbetrag.geldbetragMultiply(_preis, plaetze.size());
     }
 
     /**

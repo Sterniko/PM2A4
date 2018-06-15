@@ -25,8 +25,8 @@ public class Abrechnungswerkzeug extends ObservableSubwerkzeug {
 		return _preis;
 	}
 
-	public void set_preis(int _preis) {
-		this._preis = new Geldbetrag(_preis);
+	public void set_preis(Geldbetrag _preis) {
+		this._preis = _preis;
 	}
 
 	public AbrechnungswerkzeugUI get_uiVerk() {
